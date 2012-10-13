@@ -1,0 +1,160 @@
+@string{inproc  = "Proceedings of the "}
+@string{invited = "Invited paper, "}
+
+@string{acm  = "ACM"}
+@string{ieee = "IEEE"}
+
+@string{csf     = ieee # " Computer Security Foundations Symposium (CSF)"}
+@string{sap     = ieee # " Symposium on Security and Privacy (S\&P)"}
+@string{ccs     = acm # " Conference on Computer and Communications Security (CCS)"}
+@string{pods    = acm # " SIGMOD Symposium on Principles of Database Systems (PODS)"}
+@string{sigmod  = acm # " SIGMOD Conference on Management of Data (SIGMOD)"}
+@string{sigcomm = acm # " SIGCOMM Conference on Applications, Technologies, Architectures, and Protocols for Computer Communications (SIGCOMM)"}
+
+@string{pldi = acm # " SIGPLAN Conference on Programming Language Design and Implementation (PLDI)"}
+@string{popl = acm # " SIGPLAN Conference on Principles of Programming Languages (POPL)"}
+@string{plas = acm # " SIGPLAN Workshop on Programming Languages and Analysis for Security (PLAS)"}
+
+@string{uai       = "Conference on Uncertainty in Artificial Intelligence (UAI)"}
+@string{sas       = "Static Analysis Symposium (SAS)"}
+@string{fossacs   = "Conference on Foundations of Software Science and Computation Structures (FoSSaCS)"}
+@string{imc       = "Internet Measurement Conference (IMC)"}
+@string{usenixsec = "USENIX Security Symposium"}
+@string{asian     = "Asian Computing Science Conference (ASIAN)"}
+@string{dls       = "Dynamic Languages Symposium (DLS)"}
+@string{esop      = "European Symposium on Programming (ESOP)"}
+@string{ijcai     = "International Joint Conference on Artificial Intelligence (IJCAI)"}
+
+@string{toplas = acm # " Transactions on Programming Languages and Systems (TOPLAS)"}
+@string{jlc    = "Journal of Logic and Computation"}
+@string{jcss   = "Journal of Computer and System Sciences"}
+@string{jcs    = "Journal of Computer Security"}
+@string{ijsttt = "International Journal on Software Tools for Technology Transfer"}
+@string{cacm   = "Communications of the " # acm}
+@string{entcs  = "Electronic Notes in Theoretical Computer Science"}
+
+@string{lncs   = "Lecture Notes in Computer Science"}
+
+@string{wcre  = "Working Conference on Reverse Engineering (WCRE)"}
+@string{wpes  = "Workshop on Privacy in the Electronic Society (WPES)"}
+@string{dsl   = "Working Conference on Domain Specific Languages (DSL)"}
+@string{wmccs = "Workshop on Mobile Cloud Computing \& Services: Social Networks and Beyond"}
+
+@string{sefm = ieee # " International Conference on Software Engineering and Formal Methods (SEFM)"}
+
+@string{fusion = "International Conerence on Information Fusion (FUSION)"}
+
+%month={july}, 
+%pages={1615 -1622}, 
+@inproceedings{chakraborty12balancing, 
+author={Chakraborty, Supriyo and Raghavan, Kasturi R. and Srivastava, Mani B. and Bisdikian, Chatschik and Kaplan, Lance M.}, 
+booktitle= inproc # fusion,
+title={Balancing value and risk in information sharing through obfuscation}, 
+year={2012}, 
+}
+
+%%% PLAS
+
+%   month = jun,
+@inproceedings{mardziel12smc,
+  title = {Knowledge-Oriented Secure Multiparty Computation},
+  author = {Piotr Mardziel and Michael Hicks and Jonathan Katz and Mudhakar Srivatsa},
+  booktitle = inproc # plas,
+  year = 2012,
+}
+
+%%% CSF
+
+%   pages     = {15-27},
+@inproceedings{yasuoka10quantitative,
+  author    = {Hirotoshi Yasuoka and
+               Tachio Terauchi},
+  title     = {Quantitative Information Flow - Verification Hardness and
+               Possibilities},
+  booktitle = inproc # csf,
+  year      = {2010},
+  ee        = {http://doi.ieeecomputersociety.org/10.1109/CSF.2010.9},
+}
+
+%  month = jun,
+@inproceedings{mardziel11belief,
+  title = {Dynamic Enforcement of Knowledge-based Security Policies},
+  author = {Mardziel, Piotr and Magill, Stephen and Hicks, Michael and Srivatsa, Mudhakar},
+  booktitle = inproc # csf,
+  year = 2011,
+}
+
+%   pages     = {265-279},
+@inproceedings{alvim12gain,
+  author    = {M{\'a}rio S. Alvim and
+               Konstantinos Chatzikokolakis and
+               Catuscia Palamidessi and
+               Geoffrey Smith},
+  title     = {Measuring Information Leakage Using Generalized Gain Functions},
+  booktitle = inproc # csf,
+  year      = {2012},
+}
+
+%%% FOSSACS
+
+@inproceedings{smith09foundations,
+ author = {Smith, Geoffrey},
+ title = {On the Foundations of Quantitative Information Flow},
+ booktitle = inproc # fossacs,
+ year = {2009},
+}
+
+%%% JCS
+
+% optissn = {0926-227X},
+% optpublisher = {IOS Press},
+% optaddress = {Amsterdam, The Netherlands, The Netherlands},
+@article{clarkson09quantifying,
+ author = {Clarkson, Michael R. and Myers, Andrew C. and Schneider, Fred B.},
+ title = {Quantifying information flow with beliefs},
+ journal = jcs,
+ volume = {17},
+ number = {5},
+ pages = {655--701},
+ year = {2009},
+}
+
+%%% POPL
+
+@inproceedings{gordon13model,
+ title = {A Model-Learner Pattern for Bayesian Reasoning},
+ author = {Andrew D. Gordon and Mihhail Aizatulin and Johannes Borgstroem and Guillaume Claret and Thore Graepel and Aditya Nori and Sriram Rajamani and Claudio Russo},
+ booktitle = inproc # popl,
+ year = {2013},
+}
+
+%%% PODS
+
+@inproceedings{kenthapadi05simulatable,
+  author = {Kenthapadi, Krishnaram and Mishra, Nina and Nissim, Kobbi},
+  title = {Simulatable Auditing},
+  booktitle = inproc # pods,
+  keywords = {Data Privacy},
+  year = {2005},
+  ps_link = {http://www.cs.bgu.ac.il/\~kobbi/papers/SimulatableAuditing.ps}
+}
+
+@inproceedings{rastogi09relationship,
+ author = {Rastogi, Vibhor and Hay, Michael and Miklau, Gerome and Suciu, Dan},
+ title = {Relationship privacy: output perturbation for queries with joins},
+ booktitle = inproc # pods,
+ year = {2009},
+} 
+
+%%% CoRR
+
+@article{yasuoka11bounding,
+  author    = {Hirotoshi Yasuoka and
+               Tachio Terauchi},
+  title     = {On Bounding Problems of Quantitative Information Flow},
+  journal   = {CoRR},
+  volume    = {abs/1112.4237},
+  year      = {2011},
+  ee        = {http://arxiv.org/abs/1112.4237},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
