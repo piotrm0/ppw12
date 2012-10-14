@@ -26,7 +26,8 @@ Los Angeles, CA 90024\\
 \newcommand{\fix}{\marginpar{FIX}}
 \newcommand{\new}{\marginpar{NEW}}
 
-\newcommand{\pxm}[1]{\textcolor{red}{PM -- #1}}
+%\newcommand{\pxm}[1]{\textcolor{red}{PM -- #1}}
+\newcommand{\pxm}[1]{}
 
 \nipsfinalcopy % Uncomment for camera-ready version
 
@@ -281,19 +282,14 @@ obfuscation functions $ O $ so that the output of $ Q(s) = N(W(O(s)))
 $ is reasonable at ensuring utility, but at the same time reasonable
 at maintaining secrecy.
 
-\pxm{Kasturi, can you say more about an example of how this is done in
-  your paper and the open challenging problems from it. Make sure to
-  cite it \cite{chakraborty12balancing} and any other of your papers
-  that might be relevant. Give a good advertisement for the work.}
-
 Consider that obfuscation and noising functions are specified as probabilistic programs
 with free parameters. Then we ask whether probabilistic computation can be leveraged to
 \emph{infer} a choice of free parameters which satisfy the security and utility policies.
 In this way, we propose probabilistic computation as a suitable platform not only to
 describe and enforce security policies, but also as a mechanical and principled way
  to learn noising and obfuscation functions.
-
-\paragraph*{Predictive models for Blacklist functions} The blacklist
+ 
+\paragraph*{Predictive models for blacklist functions} The blacklist
 (and whitelist) functions are useful to protect information which is
 not part of the secret value $ s $, but is somehow correlated with the
 secret value. For example, Alice's simple demographical information
@@ -320,9 +316,9 @@ to be Alice's religion. To make this problem reasonable, we need to
 restrict ourselves to models that Bob, assumed sane, could produce,
 given some body of data available to him. For instance, if we assume
 Bob has access to a labeled dataset $ D $ tying demographical information
-to religion, Bob can learn predictive models for religion via supervised
-machine learning techniques. Alternatively, expert knowledge can be
-incorporated to produce predictive models.
+to religion, Bob can learn a variety of predictive models for religion
+via supervised machine learning techniques. Alternatively, expert knowledge\
+can be incorporated to produce predictive models.
 
 %Our goal is then, given a set of data instances $ D $, with two class
 %attributes, one ``whitelist'', and one ``blacklist'', to create
@@ -338,13 +334,12 @@ definition of security and utility, it is beneficial to include a
 \emph{diverse} set of blacklist and whitelist functions.}
 
 
-From {\emph diverse} set of blacklist functions $\blacklists$ and a set of
+From a set of blacklist functions $\blacklists$ and a set of
 whitelist functions $\whitelists$ each a predictive model specified as a probabilistic program, our goal
  is to then create noising/obfuscation functions, that $ \forall B \in \blacklists $ satisfies the security
-policy $ P(B) $, while $ \exists W \in \whitelists $ satisfies the utility policy $ U(W) $.
+policy $ P(B(\delta_2^\sim)) $, while $ \exists W \in \whitelists $ satisfies the utility policy $ U(W(\delta_2^\sim)) $.
 In \cite{chakraborty12balancing} we demonstrated one means of learning obfuscation functions
-that satisfy security and utility policies, via suppressing and selecting to share only
-particular features Alice's secret information.
+that satisfy security and utility policies in sharing with Bob an obfuscated version of Alice's secret value, $ Q = O(s) $, via suppressing and selecting to share only particular features of Alice's secret information.
 
 \paragraph*{Initial distribution}
 
