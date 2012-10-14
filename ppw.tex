@@ -289,9 +289,9 @@ at maintaining secrecy.
 Consider that obfuscation and noising functions are specified as probabilistic programs
 with free parameters. Then we ask whether probabilistic computation can be leveraged to
 \emph{infer} a choice of free parameters which satisfy the security and utility policies.
-In this way, we propose probabilistic programming as a suitable platform not only to
-describe and enforce security policies, but also as a mechanical tool to learn
-noising and obfuscation functions that satisfy the policies.
+In this way, we propose probabilistic computation as a suitable platform not only to
+describe and enforce security policies, but also as a mechanical and principled way
+ to learn noising and obfuscation functions.
 
 \paragraph*{Predictive models for Blacklist functions} The blacklist
 (and whitelist) functions are useful to protect information which is
@@ -318,9 +318,11 @@ functions. This is simply due to Bob's potential model $
 \text{Religion}(s) = r $ where $ r $ is a constant that just happens
 to be Alice's religion. To make this problem reasonable, we need to
 restrict ourselves to models that Bob, assumed sane, could produce,
-given some body of data available to him. From a labeled dataset $ D $,
-we can employ supervised machine learning to learn a variety of
-predictive models that can be candidate blacklist functions.
+given some body of data available to him. For instance, if we assume
+Bob has access to a labeled dataset $ D $ tying demographical information
+to religion, Bob can learn predictive models for religion via supervised
+machine learning techniques. Alternatively, expert knowledge can be
+incorporated to produce predictive models.
 
 %Our goal is then, given a set of data instances $ D $, with two class
 %attributes, one ``whitelist'', and one ``blacklist'', to create
@@ -335,14 +337,14 @@ predictive models that can be candidate blacklist functions.
 definition of security and utility, it is beneficial to include a
 \emph{diverse} set of blacklist and whitelist functions.}
 
-  
-Given a set of blacklist functions $\blacklists$ and a set of whitelist functions
-$\whitelists$ each specified as a probabilistic program, our goal then is to create
-noising/obfuscation functions that $ \forall B \in \blacklists $ satisfies the security
-policy $ P(W) $, while $ \exists W \in \whitelists $ satisfies the utility policy $ U(W) $.
-In \cite{chakraborty12balancing} we demonstrated one means of learning obfuscation functions,
-via suppressing particular features Alice's secret information we show that
-security and utility policies can be satisfied.
+
+From {\emph diverse} set of blacklist functions $\blacklists$ and a set of
+whitelist functions $\whitelists$ each a predictive model specified as a probabilistic program, our goal
+ is to then create noising/obfuscation functions, that $ \forall B \in \blacklists $ satisfies the security
+policy $ P(B) $, while $ \exists W \in \whitelists $ satisfies the utility policy $ U(W) $.
+In \cite{chakraborty12balancing} we demonstrated one means of learning obfuscation functions
+that satisfy security and utility policies, via suppressing and selecting to share only
+particular features Alice's secret information.
 
 \paragraph*{Initial distribution}
 
