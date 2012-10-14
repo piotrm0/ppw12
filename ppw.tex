@@ -235,9 +235,17 @@ guaranteed by adding a noise function $ N(s) \defeq 42 $,
 thereby ensuring Bob learns nothing from $ N(Q(s)) $. This ignores
 utility concerns that Bob (and Alice) might be interested in.
 
+Consider the situation where Alice possesses some data $ d $, and Bob would
+like to evaluate the whitelist function $ W $ that derives Bob's
+utility, $ o = W(d) $. Here Alice's data is not secret, instead
+we define a blacklist function $ B $ that serves to extract Alice's 
+secret information, i.e. $ s \defeq B(d) $. Alice tracks Bob's belief
+$ \delta_d $, and Alice would like to ensure before sharing the output 
+$ W(d) $ that $\delta_d |^\sim (W(d) = o)$ satisfies policy $ P(B(\delta_d)) $.
+
 Alice and Bob can address this issue by agreeing to two functions, the
 blacklist function $ B $ and the whitelist function $ W $. These are
-probabilistic functions that take in a secret as inputs and whose
+probabilistic functions that take in Alice's data as inputs and whose
 outputs Bob should not be able to predict well (blacklist) or should
 be able to predict well (whitelist). Alice's security concerns would
 be encoded in the blacklist function whereas Bob's utility concerns
