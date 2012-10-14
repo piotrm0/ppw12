@@ -75,7 +75,7 @@ Los Angeles, CA 90024\\
 Probabilistic computation is a convenient means of mechanically
 reasoning about a variety of information security problems. At its
 core, information security concerns itself with measuring or limiting
-the knowledge and adversary might attain from interacting with a
+the knowledge an adversary might attain from interacting with a
 protected system. Probabilistic inference lets one compute this
 knowledge explicitly as long as the interaction can be described as a
 program in a suitable probabilistic language that supports
@@ -116,7 +116,7 @@ If Bob indeed does learn this output, Alice can revise her
 representation of Bob's belief to $ \delta_2 $ which she can then
 revise further if Bob learns additional functions over her secret
 data. In this manner Alice explicitly tracks what Bob knows about her
-secrets as probability distribution. The problems of how Alice knew $
+secrets as a probability distribution. The problems of how Alice knew $
 \delta_1 $, Bob's initial belief, in the first place and whether she
 can actually perform exact inference will need to be addressed.
 
@@ -129,7 +129,7 @@ knowledge-based policy $ P : \dists \ra \set{\strue,\sfalse} $, where
 $ \dists $ is a set of all distributions over $ \secrets $. For
 example, Alice might require that Bob never becomes too certain of the
 secret, so she defines $ P(\delta) \defeq \forall s \in \secrets \qsep
-\delta(v) \leq t $ for some threshold $ t $. She will then deem the
+\delta(s) \leq t $ for some threshold $ t $. She will then deem the
 query $ Q $ safe whenever $ P(\delta_2) $ holds. This particular
 policy is an application of Smith's vulnerability
 metric\cite{smith09foundations}, which measures the expected
@@ -188,9 +188,9 @@ computation\cite{mardziel12smc}.
 %$ P^s(\delta) = \strue $ implies $ P(\delta \acond \paren{Q(s) = o}) =
 %\strue $.
 
-If Alice deems $ Q $ safe, she can allow Bob access to the output of $
-Q $ and update her representation of Bob's belief to $
-\delta_2^\sim $. If she rejects $ Q $, she will not allow access keep
+If Alice deems $ Q $ safe, she can allow Bob access to $ Q(s) $
+and update her representation of Bob's belief to $
+\delta_2^\sim $. If she rejects $ Q $, she will not allow access to $ Q(s) $ and keep
 $ \delta $ as the representation of Bob's unchanged belief. Whether
 Alice deems $ Q $ safe or not, she can repeat the same process for
 another program that might come around, starting from either $ \delta
@@ -262,6 +262,7 @@ that $ \neg P(\delta_W) $ holds. Alternate means could involve the
 ubiquitous entropy quantity to measure at least a minimum entropy on $
 \delta_B $ and at most a maximum entropy on $ \delta_W $.
 
+\pxm{todo: $ U(\delta) $ is not explicitly defined to be $ \neg P(\delta) $}
 \begin{definition-un} Blacklist/whitelist functions $ B $ and $ W $
   are satisfied on belief $ \delta $ relative to security policy $ P $
   and utility policy $  U $ whenever $P(B(\delta))$ and $U(W(\delta))$ hold.
