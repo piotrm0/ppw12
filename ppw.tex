@@ -135,7 +135,7 @@ secret, so she defines $ P(\delta) \defeq \forall s \in \secrets \qsep
 \delta(s) \leq t $ for some threshold $ t $. She will then deem the
 query $ Q $ safe whenever $ P(\delta_2) $ holds. This particular
 policy is an application of Smith's vulnerability
-metric\cite{smith09foundations}, which measures the expected
+metric \cite{smith09foundations}, which measures the expected
 likelihood of Bob guessing a secret value correctly in one try.
 
 Unfortunately for Alice, exact probabilistic conditioning is expensive
@@ -155,7 +155,7 @@ approximation to be sound relative to her policy:
 
 For Alice's example policy, a sound inference method would have to
 never underestimate the probability of any secret, though it could
-over-approximate it. In recent work\cite{mardziel11belief}, we
+over-approximate it. In recent work \cite{mardziel11belief}, we
 demonstrate a probabilistic language capable of this approximate, but
 sound inference. Given the definition of conditional probability, $
 Pr(A | B) = Pr(A \wedge B) / Pr(B) $, the probabilistic interpreter
@@ -163,10 +163,10 @@ maintains an over-approximation of $ Pr(A \wedge B) $ and an
 under-approximation of $ Pr(B) $, leading to a sound upper bound for $
 Pr(A | B) $. The work also shows how Alice can enforce her policy
 without revealing anything about her secret to Bob, by making her
-policy simulatable\cite{kenthapadi05simulatable}. Further application
+policy simulatable \cite{kenthapadi05simulatable}. Further application
 of these ideas were proposed to protect information of multiple
 mutually distrusting parties participating in secure multi-party
-computation\cite{mardziel12smc}.
+computation \cite{mardziel12smc}.
 
 %Before allowing Bob to observe the output of the
 %program $ Q $, she can make sure he will attain a safe level of
@@ -194,9 +194,9 @@ computation\cite{mardziel12smc}.
 If Alice deems $ Q $ safe, she can allow Bob access to $ Q(s) $
 and update her representation of Bob's belief to $
 \delta_2^\sim $. If she rejects $ Q $, she will not allow access to $ Q(s) $ and keep
-$ \delta $ as the representation of Bob's unchanged belief. Whether
+$ \delta_1 $ as the representation of Bob's unchanged belief. Whether
 Alice deems $ Q $ safe or not, she can repeat the same process for
-another program that might come around, starting from either $ \delta
+another program that might come around, starting from either $ \delta_1
 $ or $ \delta_2^\sim $, thereby maintaining an explicit representation
 of Bob's knowledge while enforcing her knowledge-based policy.
 
@@ -227,7 +227,7 @@ $ and $ N $.
 
 \paragraph*{Blacklist/Whitelist functions} Having a means of
 determining the effects of obfuscation and noising allows one to
-design such functions to achieve security and utility goals. It is
+design such functions to satisfy security objectives. It is
 generally easy to create a noising function if only security is an
 issue. For example, Alice's example policy $ P $ above can be easily
 guaranteed by adding a noise function $ N(s) \defeq 42 $,
@@ -251,11 +251,7 @@ utility inherent in Bob's belief $ \delta $ by evaluating the
 blacklist and whitelist functions on belief $ \delta : \secrets \ra
 \Real $, written $ B(\delta) = \delta_B $, a distribution on the
 outputs of $ B $, and $ W(\delta) = \delta_W$, a distribution on the
-outputs of $ W $. This can be done using probabilistic languages by
-simply evaluating $ B(s) $ or $ W(s) $ where $ s $ is the probabilistic
-value tracking Bob's belief.
-
-Alice can determine the safety of $ \delta_B $ and utility of $
+outputs of $ W $. Alice can determine the safety of $ \delta_B $ and utility of $
 \delta_W $ in a variety of ways. She could use the policy $ P $ from
 earlier on $ \delta_B $, bounding Bob's chances of guessing the output
 of $ B $. She can also use the negation of $ P $, specifically $ \neg
@@ -264,6 +260,8 @@ level of predictability of the whitelist function $ W $, by checking
 that $ \neg P(\delta_W) $ holds. Alternate means could involve the
 ubiquitous entropy quantity to measure at least a minimum entropy on $
 \delta_B $ and at most a maximum entropy on $ \delta_W $.
+
+\pxm{todo: There's an issue of accuracy of belief vs. uncertainty of belief. }
 
 \pxm{todo: $ U(\delta) $ is not explicitly defined}
 
@@ -325,7 +323,8 @@ to be Alice's religion. To make this problem reasonable, we need to
 restrict ourselves to models that Bob, assumed sane, could produce,
 given some body of data available to him. For example, the set of blacklist functions can
 consist of machine learned predictive models.  Assuming we have a labeled dataset $ D $,
-we can employ supervised machine learning to learn a variety of predictive models.
+in \cite{chakraborty12balancing} we show how to employ supervised machine learning to
+learn a variety of predictive models that consists the set of blacklist functions.
 
 %Our goal is then, given a set of data instances $ D $, with two class
 %attributes, one ``whitelist'', and one ``blacklist'', to create
@@ -341,7 +340,9 @@ $\whitelists$ each specified as a probabilistic program, our goal then is to cre
 noising/obfuscation functions that $ \forall B \in \blacklists $ satisfies the security
 policy $ P(W) $, while $ \exists W \in \whitelists $ satisfies the utility policy $ U(W) $.
 To ensure reasonable security and utility, it is beneficial to include a \emph{diverse} set of
-blacklist and whitelist functions.
+blacklist and whitelist functions. One structured method to obfuscate secrets is to 
+share only certain features of the secrets that are shown to satisfy security and utility
+policies \cite{chakraborty12balancing}.
 
 
 \paragraph*{Initial distribution}
