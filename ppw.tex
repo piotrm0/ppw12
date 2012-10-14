@@ -33,6 +33,9 @@ Los Angeles, CA 90024\\
 \newcommand{\ra}{\rightarrow}
 \newcommand{\Real}{\mathbb{R}}
 
+\newcommand{\blacklists}[0]{\textbf{Blacklists}}
+\newcommand{\whitelists}[0]{\textbf{Whitelists}}
+
 \newcommand{\secrets}[0]{\textbf{Secrets}}
 \newcommand{\dists}[0]{\textbf{Dist}}
 \newcommand{\outs}[0]{\textbf{Outs}}
@@ -262,7 +265,8 @@ that $ \neg P(\delta_W) $ holds. Alternate means could involve the
 ubiquitous entropy quantity to measure at least a minimum entropy on $
 \delta_B $ and at most a maximum entropy on $ \delta_W $.
 
-\pxm{todo: $ U(\delta) $ is not explicitly defined to be $ \neg P(\delta) $}
+\pxm{todo: $ U(\delta) $ is not explicitly defined}
+
 \begin{definition-un} Blacklist/whitelist functions $ B $ and $ W $
   are satisfied on belief $ \delta $ relative to security policy $ P $
   and utility policy $  U $ whenever $P(B(\delta))$ and $U(W(\delta))$ hold.
@@ -283,6 +287,16 @@ at maintaining secrecy.
   your paper and the open challenging problems from it. Make sure to
   cite it \cite{chakraborty12balancing} and any other of your papers
   that might be relevant. Give a good advertisement for the work.}
+  
+Describing blacklist and whitelist functions as probabilistic programs
+leads to a principled way using inference to decide whether a particular
+choice of noising and obfuscation functions satisfies security and utility policies.
+Consider moreover that obfuscation and noising functions are specified as probabilistic programs
+with free parameters. Then we ask whether
+probabilistic computation can be leveraged to \emph{infer} the free parameters
+ which satisfy the security and utility policies. In this way, we propose probabilistic
+ programming as a suitable platform not only to describe and enforce security policies, but
+also as a useful tool to automatically create noising and obfuscation functions to satisfy the policies.
 
 \paragraph*{Predictive models for Blacklist functions} The blacklist
 (and whitelist) functions are useful to protect information which is
@@ -309,16 +323,26 @@ functions. This is simply due to Bob's potential model $
 \text{Religion}(s) = r $ where $ r $ is a constant that just happens
 to be Alice's religion. To make this problem reasonable, we need to
 restrict ourselves to models that Bob, assumed sane, could produce,
-given some body of data available to him.
+given some body of data available to him. For example, the set of blacklist functions can
+consist of machine learned predictive models.  Assuming we have a labeled dataset $ D $,
+we can employ supervised machine learning to learn a variety of predictive models.
 
-Our goal is then, given a set of data instances $ D $, with two class
-attributes, one ``whitelist'', and one ``blacklist'', to create
-noising/obfuscation functions that, when applied to the data
-instances, will make \emph{all} classifiers for the blacklist
-attribute fail (perform poorly) but make some classifiers for the
-whitelist attribute perform well. \pxm{todo: Write this in a nicer
-  way. Thinking about this now, it seems like it can all be described
-  without need for probabilistic computing.}
+%Our goal is then, given a set of data instances $ D $, with two class
+%attributes, one ``whitelist'', and one ``blacklist'', to create
+%noising/obfuscation functions that, when applied to the data
+%instances, will make \emph{all} classifiers for the blacklist
+%attribute fail (perform poorly) but make some classifiers for the
+%whitelist attribute perform well. \pxm{todo: Write this in a nicer
+%  way. Thinking about this now, it seems like it can all be described
+%  without need for probabilistic computing.}
+  
+Given a set of blacklist functions $\blacklists$ and a set of whitelist functions
+$\whitelists$ each specified as a probabilistic program, our goal then is to create
+noising/obfuscation functions that $ \forall B \in \blacklists $ satisfies the security
+policy $ P(W) $, while $ \exists W \in \whitelists $ satisfies the utility policy $ U(W) $.
+To ensure reasonable security and utility, it is beneficial to include a \emph{diverse} set of
+blacklist and whitelist functions.
+
 
 \paragraph*{Initial distribution}
 
