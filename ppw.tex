@@ -322,26 +322,58 @@ information. Naturally, Alice could specify one such model as her
 blacklist function $ B $. Unfortunately this does not stop Bob from
 using a different model $ B $ which is as good or better at predicting
 Alice's religion. This is especially problematic when there are two
-disjoint sets of fields in Alice's secret $ \rsecret $ that are both good for
-predicting religion. Alice might obfuscate one, but leave the second
-set completely untouched.
+disjoint sets of fields in Alice's secret $ \rsecret $ that are both
+good for predicting religion. Alice might obfuscate one, but leave the
+second set completely untouched.
 
 In general it is impossible for Alice to ensure \emph{all} possible
 models for religion are defeated by her noising/obfuscation
 functions. This is simply due to Bob's potential model $ B(s) = r $
 where $ r $ is a constant that just happens to be Alice's religion. To
-make this problem reasonable, we need to restrict ourselves to models
-that Bob, assumed sane, could produce, given some common body of data
-available to both Alice and Bob. Even under the assumption that
-\pxm{continue.}
+make this problem reasonable, we restrict ourselves to models that
+Bob, assumed rational, could produce, given some public body of data
+available to both Alice and Bob.
 
-\paragraph*{Background knowledge} 
+\paragraph*{Background knowledge and future work} An assumption on the common
+background data is useful for both limiting the sorts of blacklist
+functions $ B $ Alice should be concerned about and for determining
+what Bob's initial belief $ \delta $ about Alice's secret fields can
+be.
 
-For instance, if we assume Bob takes advantage of a common labeled
-dataset tying demographical information to religion, Bob can learn a
-variety of predictive models for religion via supervised machine
-learning techniques. Alternatively, expert knowledge can be
-incorporated to produce predictive models.
+If we assume Bob takes advantage of a common labeled dataset $ D_r $
+of tuples $ (s_i, r_i) $ tying demographical information to religion,
+Bob can learn a variety of predictive models for religion via
+supervised machine learning techniques. Alice would like to therefore
+protect herself (via blacklist) against any model that from Bob's
+point of view is accurate (in that it does well on predicting religion
+in $ D_r $). How to do this effectively is a challenging aspect we
+would like to address in the future.
+
+A related problem is how Alice can construct $ \delta $, the initial
+belief Bob has about her secret value. The use of probability
+distributions to model Bob's knowledge already presumes that Alice's
+secret value $ \rsecret $ is a sample from $ \delta $. It is natural,
+then, to presume a shared data set $ D $ instances $ \asecret_i $ among the
+population Alice belongs to, is also composed of samples from that
+distribution.
+
+Alice could thus assume Bob would form an initial belief about her via
+a statistical model with some unknown parameters $ p $ with an initial
+distribution on $ p $, labeled $ \delta_p $ and sampling function $ S
+$, written in a probabilistic language, that produces samples $
+\asecret \in \secrets $ given parameters $ p $. Alice could then infer
+these parameters by conditioning on the samples from this distribution
+being $ D $, specifically $ \delta_p \cond (S(p) = \asecret_1) \cond
+(S(p) = \asecret_2) \cond \cdots $ as is demonstrated in recent work
+of Gordon et al.\cite{gordon13model}. Bob's initial belief about $
+\rsecret $ would then be the distribution $ S(\delta_p) $.
+
+The problem here is the same as in the problem of specifying blacklist
+functions; Alice does not know what model Bob could use, either to
+infer her religion, or to form an initial belief. Alice could take
+into account multiple models, thereby having to track several options
+for Bob's belief, but how to construct a sufficient set of models is
+another challenging element of our future work.
 
 %Our goal is then, given a set of data instances $ D $, with two class
 %attributes, one ``whitelist'', and one ``blacklist'', to create
@@ -373,15 +405,6 @@ obfuscation functions that satisfy security and utility policies in
 sharing with Bob an obfuscated version of Alice's secret value, $ Q =
 O(s) $, via suppressing and selecting to share only particular
 features of Alice's secret information.
-
-\paragraph*{Initial distribution}
-
-\pxm{todo: How to soundly determine what an adversary believes to begin
-  with. If there is room left.}
-
-\section*{Related work} \pxm{todo: Add some other clear applications
-  of probabilistic computing to other information security research,
-  if there is room.}
 
 % \subsubsection*{Acknowledgments}
 
