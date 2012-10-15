@@ -234,19 +234,15 @@ at the same time, revising Bob's belief to $ \delta_2 = \delta_1 \cond
 \paren{N(Q(O(\rsecret))) = o} $. Bob's presumed revised belief assumes
 that he knows $ O $ and $ N $.
 
-Having a means of
-determining the effects of obfuscation and noising allows one to
-verify that a noising or obfuscation mechanism
-satisfies security objectives. If security is the only issue
+If security is the only issue
 then a trivial noising function, $ N(\rsecret) \defeq 42 $, ensures
 that Bob learns absolutely nothing about $ \rsecret $.
 This ignores utility concerns that Bob (and Alice) might be
-interested in. In learning the appropriate level of noising and
-obfuscation, we can assume, for instance, that Bob's utility is
-derived from the accuracy or precision of the query answer $ Q(\rsecret) $.
+interested in. One approach is to specify Bob's utility in terms of
+the accuracy or precision of the query answer $ Q(\rsecret) $.
 Depending on the structure of $ Q $, it is certainly
 possible to reveal some obfuscated or noised version $Q'$ that simultaneously
-sataisfy both security and utility objectives.
+satisfy both security and utility objectives.
 
 \paragraph*{Secrets as Probablistic Programs}
 
