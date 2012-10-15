@@ -255,11 +255,39 @@ assuming she has specific risks in mind.
 
 The pair $ B $ and $ W $, referred to as ``blacklist'' and
 ``whitelist'' functions respectively, thus specify the Bob's utility
-and Alice's risk in information sharing. For example, Alice might not
-want Bob to determine her religion from her secret information, but
-agrees that it is acceptable that Bob determines her age, regardless
-of whether these properties are directly part of the fields of Alice's
-secret $ \rsecret $.
+and Alice's risk in information sharing. In the framework of belief
+tracking via probabilistic computation, Alice can judge the safety and
+utility inherent in Bob's belief $ \delta $ about her secret by
+evaluating the blacklist and whitelist functions on the probabilistic
+value that represents Bob's belief, written $ B(\delta) $, a
+distribution on the outputs of $ B $, and $ W(\delta)$, a distribution
+on the outputs of $ W $, respectively.
+
+\begin{definition-un} Blacklist/whitelist functions $ B $ and $ W $
+  are satisfied on belief $ \delta $ relative to security policy $ P $
+  and utility policy $ U $ whenever $P(B(\delta))$ and $U(W(\delta))$ hold.
+\end{definition-un}
+Alice can determine the safety of $ B(\delta) $ and utility of $
+W(\delta) $ in a variety of ways. She could use the policy $ P $ from
+earlier on $ \delta_B $, bounding Bob's chances of guessing the output
+of $ B $. She can also use the negation of $ P $, specifically $
+U(\delta) \defeq \neg P(\delta) = \exists o \qsep \delta(o) > t $, to
+measure some minimum level of utility of the whitelist function $ W $,
+by checking that $ U(\delta_W) $ holds. Alternate means could involve
+the ubiquitous entropy quantity to measure a lower bound on the
+entropy of $ \delta_B $ and an upper bound on the entropy of $
+\delta_W $.
+
+%For example, Alice might not
+%want Bob to determine her religion from her secret information, but
+%agrees that it is acceptable that Bob determines her age, regardless
+%of whether these properties are directly part of the fields of Alice's
+%secret $ \rsecret $.
+
+Having the ability to measure the secrecy and utility of Bob's belief,
+Alice can then determine how to construct a function $ Q(s) =
+N(W(O(s))) $ to ensure $ \delta \cond \paren{Q(\rsecret) = o} $
+satisfies the security and utility policies (if possible).
 
 \pxm{Move or reword this para. Or perhaps it is no longer necessary
   given revised discussion above.} Consider the situation where Alice
@@ -271,34 +299,8 @@ i.e. $ s \defeq B(d) $. Alice tracks Bob's belief $ \delta_d $, and
 Alice would like to ensure before sharing the output $ W(d) $ that
 $\delta_d |^\sim (W(d) = o)$ satisfies policy $ P(B(\delta_d)) $.
 
-In the framework of belief tracking via probabilistic computation,
-Alice can judge the safety and utility inherent in Bob's belief $
-\delta $ by evaluating the blacklist and whitelist functions on the
-probabilistic value that represents Bob's belief, written $ B(\delta)
-= \delta_B $, a distribution on the outputs of $ B $, and $ W(\delta)
-= \delta_W$, a distribution on the outputs of $ W $. Alice can
-determine the safety of $ \delta_B $ and utility of $ \delta_W $ in a
-variety of ways. She could use the policy $ P $ from earlier on $
-\delta_B $, bounding Bob's chances of guessing the output of $ B
-$. She can also use the negation of $ P $, specifically $ U(\delta)
-\defeq \neg P(\delta) = \exists o \qsep \delta(o) > t $, to measure
-some minimum level of utility of the whitelist function $ W $, by
-checking that $ U(\delta_W) $ holds. Alternate means could involve the
-ubiquitous entropy quantity to measure at least a minimum entropy on $
-\delta_B $ and at most a maximum entropy on $ \delta_W $.
-
-\pxm{todo: There's an issue of accuracy of belief vs. uncertainty of belief. }
-
-\begin{definition-un} Blacklist/whitelist functions $ B $ and $ W $
-  are satisfied on belief $ \delta $ relative to security policy $ P $
-  and utility policy $  U $ whenever $P(B(\delta))$ and $U(W(\delta))$ hold.
-\end{definition-un}
-
-Having the ability to measure the secrecy and utility of Bob's belief,
-Alice can then determine how to add noise to or obfuscate $ W $ so as
-to ensure $ \delta \cond \paren{Q(\rsecret) = o} $ satisfies security
-and utility policies (if possible), where $ Q $ is the
-obfuscated/noised version of $ W $.
+\pxm{todo: There's an issue of accuracy of belief vs. uncertainty of
+  belief. Let us ignore this issue.}
 
 \pxm{The below is kind of vague and I'm wondering how to (1) explain
   it better, and (2) fit it in better with what has just been said.}
@@ -336,11 +338,16 @@ models for religion are defeated by her noising/obfuscation
 functions. This is simply due to Bob's potential model $ B(s) = r $
 where $ r $ is a constant that just happens to be Alice's religion. To
 make this problem reasonable, we need to restrict ourselves to models
-that Bob, assumed sane, could produce, given some body of data
-available to him. For instance, if we assume Bob has access to a
-labeled dataset $ D $ tying demographical information to religion, Bob
-can learn a variety of predictive models for religion via supervised
-machine learning techniques. Alternatively, expert knowledge\ can be
+that Bob, assumed sane, could produce, given some common body of data
+available to both Alice and Bob. Even under the assumption that
+\pxm{continue.}
+
+\paragraph*{Background knowledge} 
+
+For instance, if we assume Bob takes advantage of a common labeled
+dataset tying demographical information to religion, Bob can learn a
+variety of predictive models for religion via supervised machine
+learning techniques. Alternatively, expert knowledge can be
 incorporated to produce predictive models.
 
 %Our goal is then, given a set of data instances $ D $, with two class
