@@ -12,7 +12,7 @@
 \author{
 Piotr Mardziel\\
 Department of Computer Science\\
-University of Maryland\\
+University of Maryland, College Park\\
 College Park, MD 20740 \\
 \texttt{piotrm@cs.umd.edu} \\
 \And
@@ -26,8 +26,8 @@ Los Angeles, CA 90024\\
 \newcommand{\fix}{\marginpar{FIX}}
 \newcommand{\new}{\marginpar{NEW}}
 
-%\newcommand{\pxm}[1]{\textcolor{red}{PM -- #1}}
-\newcommand{\pxm}[1]{}
+\newcommand{\pxm}[1]{\textcolor{red}{PM -- #1}}
+%\newcommand{\pxm}[1]{}
 
 \nipsfinalcopy % Uncomment for camera-ready version
 
@@ -38,6 +38,9 @@ Los Angeles, CA 90024\\
 \newcommand{\whitelists}[0]{\textbf{Whitelists}}
 
 \newcommand{\secrets}[0]{\textbf{Secrets}}
+\newcommand{\asecret}[0]{s}
+\newcommand{\rsecret}[0]{\asecret^*}
+
 \newcommand{\dists}[0]{\textbf{Dist}}
 \newcommand{\outs}[0]{\textbf{Outs}}
 
@@ -96,33 +99,37 @@ follow. We describe this core concept adopting the notation and
 conventions of Clarkson's experimental protocol
 \cite{clarkson09quantifying}.
 
-Alice wishes to grant Bob partial access to her secret information
-while preserving the secrecy of some aspect of the secret. To do this,
-Alice will track what Bob learns about her secrets while assuming Bob
-is a rational adversary who will use any information provided to him
-in order to learn those secrets.
+Alice wishes to grant Bob partial access to some secret data fields
+while making sure Bob does not learn too much. The data here is secret
+in that Bob does not know it, though it is not necessarily data that
+might be considered secret in the typical sense of the word \pxm{Added
+  this but kept the word ``secret'' to not confuse people in the
+  discussions that follow.}. To do this, Alice will track what Bob learns about these
+fields as a rational adversary who will use any information provided
+to him in order to learn Alice's secret values. Specifying the
+protection of the secret will be addressed shortly.
 
-Alice's secret is a value $ s $ which Bob knows is in some set of
-possible secrets $ \secrets $. Furthermore, Bob considers some secret
+Alice's secret data is a value $ \rsecret $ which Bob knows is in some
+set of possibilities $ \secrets $. Furthermore, Bob considers some
 values more likely than others, a probability distribution $ \delta_1
 : \secrets \ra \Real $. We will refer to this distribution as Bob's
 \emph{belief}. Alice then considers the effect of letting Bob learn
-the output of a potentially non-deterministic function or \emph{query}
-$ Q $, written in a probabilistic language. She can do this by
-computing the conditional distribution $ \delta_2 \defeq \delta_1
-\cond (Q(s) = o) $ for some potential output value $ o $. Assuming Bob
-learns nothing more than the output $ o $ and $ \delta | C $ indeed
-implements \emph{exact} probabilistic conditioning, this distribution
-$ \delta_2 $ will be the belief Bob would attain, were he to learn
-that the function $ Q $ outputs $ o $ given secret input $ s $.
+the output of a potentially non-deterministic function $ W $, written
+in a probabilistic language. She can do this by computing the
+conditional distribution $ \delta_2 \defeq \delta_1 \cond (W(\rsecret)
+= o) $ for some potential output value $ o $. Assuming $ \delta | C $
+indeed implements \emph{exact} probabilistic conditioning, this
+distribution $ \delta_2 $ will be the belief Bob would attain, were he
+to see that the function $ W $ outputs $ o $ given input $ \rsecret $.
 
 If Bob indeed does learn this output, Alice can revise her
 representation of Bob's belief to $ \delta_2 $ which she can then
-revise further if Bob learns additional functions over her secret
-data. In this manner Alice explicitly tracks what Bob knows about her
-secrets as a probability distribution. The problems of how Alice knew $
+revise further if Bob learns additional functions over her data. In
+this manner Alice explicitly tracks what Bob knows about her secret
+as a probability distribution. The problems of how Alice knew $
 \delta_1 $, Bob's initial belief, in the first place and whether she
-can actually perform exact inference will need to be addressed.
+can actually perform exact inference will need to be
+addressed. \pxm{Remove or add discussion about initial belief.}
 
 \paragraph{Knowledge-based policy enforcement}
 Alice can use the tracked belief in a variety of ways, the most direct
@@ -131,18 +138,18 @@ order to determine whether she should let Bob get access to the output
 of the function. To do this, Alice starts by defining a
 knowledge-based policy $ P : \dists \ra \set{\strue,\sfalse} $, where
 $ \dists $ is a set of all distributions over $ \secrets $. For
-example, Alice might require that Bob never becomes too certain of the
-secret, so she defines $ P(\delta) \defeq \forall s \in \secrets \qsep
-\delta(s) \leq t $ for some threshold $ t $. She will then deem the
+example, Alice might require that Bob never becomes too certain of her
+value, so she defines $ P(\delta) \defeq \forall \asecret \in \secrets \qsep
+\delta(\asecret) \leq t $ for some threshold $ t $. She will then deem the
 query $ Q $ safe whenever $ P(\delta_2) $ holds. This particular
-policy is an application of Smith's vulnerability
-metric \cite{smith09foundations}, which measures the expected
-likelihood of Bob guessing a secret value correctly in one try.
+policy is an application of Smith's vulnerability metric
+\cite{smith09foundations}, which measures the expected likelihood of
+Bob guessing a secret value correctly in one try.
 
 Unfortunately for Alice, exact probabilistic conditioning is expensive
 so she decides has to use an approximation. Instead of computing $
 \delta_2 $, she gets $ \delta_2^\sim \defeq \delta_1 \acond
-\paren{Q(s) = o} \approx \delta_1 | \paren{Q(s) = o} $. The
+\paren{W(\rsecret) = o} \approx \delta_1 | \paren{W(\rsecret) = o} $. The
 approximation $ \delta_2^\sim $ here need not be a proper probability
 distribution. She does not want the approximate inference to conclude
 a query is safe when it really is not so she requires the
@@ -162,9 +169,8 @@ sound inference. Given the definition of conditional probability, $
 Pr(A | B) = Pr(A \wedge B) / Pr(B) $, the probabilistic interpreter
 maintains an over-approximation of $ Pr(A \wedge B) $ and an
 under-approximation of $ Pr(B) $, leading to a sound upper bound for $
-Pr(A | B) $. The work also shows how Alice can enforce her policy
-without revealing anything about her secret to Bob, by making her
-policy simulatable \cite{kenthapadi05simulatable}. Further application
+Pr(A | B) $. The work shows how Alice can enforce her policy
+without revealing anything about her secret to Bob. Further application
 of these ideas were proposed to protect information of multiple
 mutually distrusting parties participating in secure multi-party
 computation \cite{mardziel12smc}.
@@ -192,87 +198,96 @@ computation \cite{mardziel12smc}.
 %$ P^s(\delta) = \strue $ implies $ P(\delta \acond \paren{Q(s) = o}) =
 %\strue $.
 
-If Alice deems $ Q $ safe, she can allow Bob access to $ Q(s) $
-and update her representation of Bob's belief to $
-\delta_2^\sim $. If she rejects $ Q $, she will not allow access to $ Q(s) $ and keep
-$ \delta_1 $ as the representation of Bob's unchanged belief. Whether
-Alice deems $ Q $ safe or not, she can repeat the same process for
-another program that might come around, starting from either $ \delta_1
-$ or $ \delta_2^\sim $, thereby maintaining an explicit representation
-of Bob's knowledge while enforcing her knowledge-based policy.
+If Alice deems $ W $ safe, she can allow Bob access to $ W(\rsecret) $
+and update her representation of Bob's belief to $ \delta_2^\sim $. If
+she rejects $ W $, she will not allow access to $ W(\rsecret) $ and
+keep $ \delta_1 $ as the representation of Bob's unchanged
+belief. Whether Alice deems $ W $ safe or not, she can repeat the same
+process for another program that might come around, starting from
+either $ \delta_1 $ or $ \delta_2^\sim $, thereby maintaining an
+explicit representation of Bob's knowledge while enforcing her
+knowledge-based policy.
 
 \paragraph*{Obfuscation/Noising} Probabilistic computation is also very
 convenient for discerning the effects of obfuscation or noising
-mechanisms, via simple composition with the observation function $ Q
+mechanisms, via simple composition with the observation function $ W
 $.
 
-If Alice does not want Bob to learn the output of $ Q $ directly, she
+If Alice does not want Bob to learn the output of $ W $ directly, she
 can add obfuscation to its input, or noising to its output. Let $ O $
 be a potentially non-deterministic obfuscation function, written in a
-probabilistic language, that takes in a secret $ s $ and produces
-another $ s' $. Depending on the structure of $ \secrets $, this
-obfuscation might be in the form of resolution reduction,
-randomization of locations, or a variety of other mechanisms. Alice
-can then consider Bob's knowledge were he to learn the output of an
-obfuscated function $ Q(O(s)) $ instead of just $ Q(s) $, using
-conditioning, $ \delta_2 = \delta_1 \cond \paren{Q(O(s)) = o} $.
+probabilistic language, that takes in a value $ \asecret \in \secrets
+$ and produces another $ \asecret' \in \secrets $. Depending on the
+structure of $ \secrets $, this obfuscation might be in the form of
+resolution reduction, permutation of locations, or a variety of other
+mechanisms. Alice can then consider Bob's knowledge were he to learn
+the output of an obfuscated function $ W(O(\rsecret)) $ instead of $
+Q(\rsecret) $ directly, using conditioning, $ \delta_2 = \delta_1
+\cond \paren{W(O(\rsecret)) = o} $.
 
-Alice can also consider adding noise to the output of $ Q $, using a
-noising function $ N $ that takes in an output of $ Q $ and produces
-another, again written in a probabilistic language. She can then
-consider Bob's revised belief $ \delta_2 = \delta_1 \cond
-\paren{N(Q(s)) = o} $. She might consider obfuscation and noise at the
-same time, revising Bob's belief to $ \delta_2 = \delta_1 \cond
-\paren{N(Q(O(s))) = o} $. All of this assumes that Bob is aware of $ O
-$ and $ N $.
+Alice can also consider adding noise to the output of $ W $, using a
+noising function $ N $, again written in a probabilistic language. She
+can then consider Bob's revised belief $ \delta_2 = \delta_1 \cond
+\paren{N(W(\rsecret)) = o} $. She might consider obfuscation and noise
+at the same time, revising Bob's belief to $ \delta_2 = \delta_1 \cond
+\paren{N(W(O(\rsecret))) = o} $. Bob's presumed revised belief assumes
+that he knows $ O $ and $ N $.
 
 \paragraph*{Blacklist/Whitelist functions} Having a means of
 determining the effects of obfuscation and noising allows one to
-design such functions to satisfy security objectives. It is
-generally easy to create a noising function if only security is an
-issue. For example, Alice's example policy $ P $ above can be easily
-guaranteed by adding a noise function $ N(s) \defeq 42 $,
-thereby ensuring Bob learns nothing from $ N(Q(s)) $. This ignores
-utility concerns that Bob (and Alice) might be interested in.
+design such functions to satisfy security objectives. It is easy to
+create a trivial noising function, $ N(\asecret) \defeq 42 $, if only
+security is an issue, thereby ensuring Bob learns absolutely
+nothing. This ignores utility concerns that Bob (and Alice) might be
+interested in.
 
-Consider the situation where Alice possesses some data $ d $, and Bob would
-like to evaluate the whitelist function $ W $ that derives Bob's
-utility, $ o = W(d) $. Here Alice's data is not secret, instead
-we define a blacklist function $ B $ that serves to extract Alice's 
-secret information, i.e. $ s \defeq B(d) $. Alice tracks Bob's belief
-$ \delta_d $, and Alice would like to ensure before sharing the output 
-$ W(d) $ that $\delta_d |^\sim (W(d) = o)$ satisfies policy $ P(B(\delta_d)) $.
+Though still cautiously considered an adversary intent on learning $
+\rsecret $, let us assume that Bob's utility is derived from the
+accuracy or precision of his view on $ W(\rsecret) $, and not $
+\rsecret $. Depending on the structure of $ W $, it is certainly
+possible to reveal $ W(\rsecret) $ without revealing much about $
+\rsecret $.  Likewise, Alice might not consider her hidden value $ \rsecret $
+itself all that damaging, but could define a risky function $ B $
+whose output she would like to protect. Specifying Alice's risk in
+terms of functions is a more versatile approach than the policies
+mentioned earlier that limit Bob's view on Alice's secret itself,
+assuming she has specific risks in mind.
 
-Alice and Bob can address this issue by agreeing to two functions, the
-blacklist function $ B $ and the whitelist function $ W $. These are
-probabilistic functions that take in Alice's data as inputs and whose
-outputs Bob should not be able to predict well (blacklist) or should
-be able to predict well (whitelist). Alice's security concerns would
-be encoded in the blacklist function whereas Bob's utility concerns
-would be encoded as the whitelist function. For example, Alice might
-not want Bob to determine her religion from her secret information,
-but agrees that it is acceptable that Bob determines her age,
-regardless of whether these properties are directly part of the secret
-$ s $.
+The pair $ B $ and $ W $, referred to as ``blacklist'' and
+``whitelist'' functions respectively, thus specify the Bob's utility
+and Alice's risk in information sharing. For example, Alice might not
+want Bob to determine her religion from her secret information, but
+agrees that it is acceptable that Bob determines her age, regardless
+of whether these properties are directly part of the fields of Alice's
+secret $ \rsecret $.
 
-In the framework of belief tracking, Alice can judge the security and
-utility inherent in Bob's belief $ \delta $ by evaluating the
-blacklist and whitelist functions on belief $ \delta : \secrets \ra
-\Real $, written $ B(\delta) = \delta_B $, a distribution on the
-outputs of $ B $, and $ W(\delta) = \delta_W$, a distribution on the
-outputs of $ W $. Alice can determine the safety of $ \delta_B $ and utility of $
-\delta_W $ in a variety of ways. She could use the policy $ P $ from
-earlier on $ \delta_B $, bounding Bob's chances of guessing the output
-of $ B $. She can also use the negation of $ P $, specifically $ \neg
-P(\delta) = \exists o \qsep \delta(o) > t $, to measure some minimum
-level of predictability of the whitelist function $ W $, by checking
-that $ \neg P(\delta_W) $ holds. Alternate means could involve the
+\pxm{Move or reword this para. Or perhaps it is no longer necessary
+  given revised discussion above.} Consider the situation where Alice
+possesses some data $ d $, and Bob would like to evaluate the
+whitelist function $ W $ that derives Bob's utility, $ o = W(d)
+$. Here Alice's data is not secret, instead we define a blacklist
+function $ B $ that serves to extract Alice's secret information,
+i.e. $ s \defeq B(d) $. Alice tracks Bob's belief $ \delta_d $, and
+Alice would like to ensure before sharing the output $ W(d) $ that
+$\delta_d |^\sim (W(d) = o)$ satisfies policy $ P(B(\delta_d)) $.
+
+In the framework of belief tracking via probabilistic computation,
+Alice can judge the safety and utility inherent in Bob's belief $
+\delta $ by evaluating the blacklist and whitelist functions on the
+probabilistic value that represents Bob's belief, written $ B(\delta)
+= \delta_B $, a distribution on the outputs of $ B $, and $ W(\delta)
+= \delta_W$, a distribution on the outputs of $ W $. Alice can
+determine the safety of $ \delta_B $ and utility of $ \delta_W $ in a
+variety of ways. She could use the policy $ P $ from earlier on $
+\delta_B $, bounding Bob's chances of guessing the output of $ B
+$. She can also use the negation of $ P $, specifically $ U(\delta)
+\defeq \neg P(\delta) = \exists o \qsep \delta(o) > t $, to measure
+some minimum level of utility of the whitelist function $ W $, by
+checking that $ U(\delta_W) $ holds. Alternate means could involve the
 ubiquitous entropy quantity to measure at least a minimum entropy on $
 \delta_B $ and at most a maximum entropy on $ \delta_W $.
 
 \pxm{todo: There's an issue of accuracy of belief vs. uncertainty of belief. }
-
-\pxm{todo: $ U(\delta) $ is not explicitly defined}
 
 \begin{definition-un} Blacklist/whitelist functions $ B $ and $ W $
   are satisfied on belief $ \delta $ relative to security policy $ P $
@@ -280,31 +295,31 @@ ubiquitous entropy quantity to measure at least a minimum entropy on $
 \end{definition-un}
 
 Having the ability to measure the secrecy and utility of Bob's belief,
-Alice can then determine which function $ Q $ to allow Bob to see the
-output of, so as to ensure $ \delta \cond \paren{Q(s) = o} $ satisfies
-security and utility policies. The direct choice is to let Bob see the
-output of the whitelist function $ W $, assuming his knowledge from
-this observation does not let him attack Alice's blacklist function $
-B $. Otherwise Alice would need to find noising $ N $ and/or
-obfuscation functions $ O $ so that the output of $ Q(s) = N(W(O(s)))
-$ is reasonable at ensuring utility, but at the same time reasonable
-at maintaining secrecy.
+Alice can then determine how to add noise to or obfuscate $ W $ so as
+to ensure $ \delta \cond \paren{Q(\rsecret) = o} $ satisfies security
+and utility policies (if possible), where $ Q $ is the
+obfuscated/noised version of $ W $.
 
-Consider that obfuscation and noising functions are specified as probabilistic programs
-with free parameters. Then we ask whether probabilistic computation can be leveraged to
-\emph{infer} a choice of free parameters which satisfy the security and utility policies.
-In this way, we propose probabilistic computation as a suitable platform not only to
-describe and enforce security policies, but also as a mechanical and principled way
- to learn noising and obfuscation functions.
+\pxm{The below is kind of vague and I'm wondering how to (1) explain
+  it better, and (2) fit it in better with what has just been said.}
+
+Consider that obfuscation and noising functions are specified as
+probabilistic programs with free parameters. Then we ask whether
+probabilistic computation can be leveraged to \emph{infer} a choice of
+free parameters which satisfy the security and utility policies.  In
+this way, we propose probabilistic computation as a suitable platform
+not only to describe and enforce security policies, but also as a
+mechanical and principled way to learn noising and obfuscation
+functions.
  
 \paragraph*{Predictive models for blacklist functions} The blacklist
 (and whitelist) functions are useful to protect information which is
-not part of the secret value $ s $, but is somehow correlated with the
-secret value. For example, Alice's simple demographical information
-like age, postal code, and gender might compose the structure of $ s $
-but Alice might be more interested in protecting her religions
-preference, even though this is not a field in the system she is
-securing.
+not part of the secret value $ \rsecret $, but is somehow correlated
+with the secret value. For example, Alice's simple demographical
+information like age, postal code, and gender might compose the
+structure of $ \rsecret $ but Alice might be more interested in
+protecting her religions preference, even though this is not a field
+in the system she is securing.
 
 Predictive models or classifiers, however, might exist that do a
 reasonable job of predicting religion given demographical
@@ -312,21 +327,21 @@ information. Naturally, Alice could specify one such model as her
 blacklist function $ B $. Unfortunately this does not stop Bob from
 using a different model $ B $ which is as good or better at predicting
 Alice's religion. This is especially problematic when there are two
-disjoint sets of fields in Alice's secret $ s $ that are both good for
+disjoint sets of fields in Alice's secret $ \rsecret $ that are both good for
 predicting religion. Alice might obfuscate one, but leave the second
 set completely untouched.
 
 In general it is impossible for Alice to ensure \emph{all} possible
 models for religion are defeated by her noising/obfuscation
-functions. This is simply due to Bob's potential model $
-\text{Religion}(s) = r $ where $ r $ is a constant that just happens
-to be Alice's religion. To make this problem reasonable, we need to
-restrict ourselves to models that Bob, assumed sane, could produce,
-given some body of data available to him. For instance, if we assume
-Bob has access to a labeled dataset $ D $ tying demographical information
-to religion, Bob can learn a variety of predictive models for religion
-via supervised machine learning techniques. Alternatively, expert knowledge\
-can be incorporated to produce predictive models.
+functions. This is simply due to Bob's potential model $ B(s) = r $
+where $ r $ is a constant that just happens to be Alice's religion. To
+make this problem reasonable, we need to restrict ourselves to models
+that Bob, assumed sane, could produce, given some body of data
+available to him. For instance, if we assume Bob has access to a
+labeled dataset $ D $ tying demographical information to religion, Bob
+can learn a variety of predictive models for religion via supervised
+machine learning techniques. Alternatively, expert knowledge\ can be
+incorporated to produce predictive models.
 
 %Our goal is then, given a set of data instances $ D $, with two class
 %attributes, one ``whitelist'', and one ``blacklist'', to create
@@ -341,13 +356,23 @@ can be incorporated to produce predictive models.
 definition of security and utility, it is beneficial to include a
 \emph{diverse} set of blacklist and whitelist functions.}
 
+\pxm{Can we get away from having to talk about a set of functions
+  here, I don't think they are strictly necessary. Also, for the
+  reference, was the work specific to a domain (of sensor readings or
+  some such) or more general that applies to a broad type of data?
+  Can you mention this?}
 
-From a set of blacklist functions $\blacklists$ and a set of
-whitelist functions $\whitelists$ each a predictive model specified as a probabilistic program, our goal
- is to then create noising/obfuscation functions, that $ \forall B \in \blacklists $ satisfies the security
-policy $ P(B(\delta_2^\sim)) $, while $ \exists W \in \whitelists $ satisfies the utility policy $ U(W(\delta_2^\sim)) $.
-In \cite{chakraborty12balancing} we demonstrated one means of learning obfuscation functions
-that satisfy security and utility policies in sharing with Bob an obfuscated version of Alice's secret value, $ Q = O(s) $, via suppressing and selecting to share only particular features of Alice's secret information.
+From a set of blacklist functions $\blacklists$ and a set of whitelist
+functions $\whitelists$ each a predictive model specified as a
+probabilistic program, our goal is to then create noising/obfuscation
+functions, that $ \forall B \in \blacklists $ satisfies the security
+policy $ P(B(\delta_2^\sim)) $, while $ \exists W \in \whitelists $
+satisfies the utility policy $ U(W(\delta_2^\sim)) $.  In
+\cite{chakraborty12balancing} we demonstrated one means of learning
+obfuscation functions that satisfy security and utility policies in
+sharing with Bob an obfuscated version of Alice's secret value, $ Q =
+O(s) $, via suppressing and selecting to share only particular
+features of Alice's secret information.
 
 \paragraph*{Initial distribution}
 
