@@ -257,15 +257,15 @@ program that operates on Alice's data, and whose output she would like to protec
 \end{definition-un}
 
 Alice can determine the safety of $ B(\delta) $ and utility of $
-W(\delta) $ in a variety of ways. She could use the policy $ P $ from
+Q(\delta) $ in a variety of ways. She could use the policy $ P $ from
 earlier on $ \delta_B $, bounding Bob's chances of guessing the output
 of $ B $. She can also use the negation of $ P $, specifically $
 U(\delta) \defeq \neg P(\delta) = \exists o \qsep \delta(o) > t $, to
-measure some minimum level of utility of the whitelist function $ W $,
-by checking that $ U(\delta_W) $ holds. Alternate means could involve
+measure some minimum level of utility query function $ Q $,
+by checking that $ U(\delta_Q) $ holds. Alternate means could involve
 the ubiquitous entropy quantity to measure a lower bound on the
 entropy of $ \delta_B $ and an upper bound on the entropy of $
-\delta_W $.
+\delta_Q $.
 
 %For example, Alice might not
 %want Bob to determine her religion from her secret information, but
@@ -274,34 +274,21 @@ entropy of $ \delta_B $ and an upper bound on the entropy of $
 %secret $ \rsecret $.
 
 Having the ability to measure the secrecy and utility of Bob's belief,
-Alice can then determine how to construct a function $ Q(s) =
-N(W(O(s))) $ to ensure $ \delta \cond \paren{Q(\rsecret) = o} $
+Alice can then determine how to construct a function $ Q'(\asecret) =
+N(Q(O(\asecret))) $ to ensure $ \delta \cond \paren{Q(\rsecret) = o} $
 satisfies the security and utility policies (if possible).
 
-\pxm{Move or reword this para. Or perhaps it is no longer necessary
-  given revised discussion above.} Consider the situation where Alice
-possesses some data $ d $, and Bob would like to evaluate the
-whitelist function $ W $ that derives Bob's utility, $ o = W(d)
-$. Here Alice's data is not secret, instead we define a blacklist
-function $ B $ that serves to extract Alice's secret information,
-i.e. $ s \defeq B(d) $. Alice tracks Bob's belief $ \delta_d $, and
-Alice would like to ensure before sharing the output $ W(d) $ that
-$\delta_d |^\sim (W(d) = o)$ satisfies policy $ P(B(\delta_d)) $.
 
-\pxm{todo: There's an issue of accuracy of belief vs. uncertainty of
-  belief. Let us ignore this issue.}
+Consider that obfuscation and noising functions can be specified as
+probabilistic programs with free parameters. Something that needs to
+be addressed is to devise efficient methods that leverage
+probablistic computation to \emph{learn} an appropriate choice
+of parameters such that security and utility policies are satisfied.
 
-\pxm{The below is kind of vague and I'm wondering how to (1) explain
-  it better, and (2) fit it in better with what has just been said.}
-
-Consider that obfuscation and noising functions are specified as
-probabilistic programs with free parameters. Then we ask whether
-probabilistic computation can be leveraged to \emph{infer} a choice of
-free parameters which satisfy the security and utility policies.  In
-this way, we propose probabilistic computation as a suitable platform
-not only to describe and enforce security policies, but also as a
-mechanical and principled way to learn noising and obfuscation
-functions.
+The simplest form of sharing information occurs when Bob's
+query $ Q $ simply outputs $ \rsecret $. In recent work we demonstrate
+how $ \asecret $ can be obfuscated via selecting to share only particular
+\emph{features}.
  
 \paragraph*{Predictive models for blacklist functions} The blacklist
 (and whitelist) functions are useful to protect information which is
