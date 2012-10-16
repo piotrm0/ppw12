@@ -250,22 +250,25 @@ Alice's data might itself not be all that damaging, and in that setting
 it does not make sense for Alice to protect its reconstruction by Bob. Instead
 Alice can define a ``blacklist'' function $ B $ specified as a probablistic
 program that operates on Alice's data, and whose output she would like to protect.
+Likewise, Bob's utility can be defined in terms of a ``whitelist'' function $
+W $. The simplest case is where the utility derived by Bob is limited to the
+query function, $ W \defeq Q $.
 
-\begin{definition-un} Blacklist and Utility functions $ B $ and $ Q $
+\begin{definition-un} Blacklist and Whitelist functions $ B $ and $ W $
   are satisfied on belief $ \delta $ relative to security policy $ P $
   and utility policy $ U $ whenever $P(B(\delta))$ and $U(W(\delta))$ hold.
 \end{definition-un}
 
 Alice can determine the safety of $ B(\delta) $ and utility of $
-Q(\delta) $ in a variety of ways. She could use the policy $ P $ from
+W(\delta) $ in a variety of ways. She could use the policy $ P $ from
 earlier on $ \delta_B $, bounding Bob's chances of guessing the output
 of $ B $. She can also use the negation of $ P $, specifically $
 U(\delta) \defeq \neg P(\delta) = \exists o \qsep \delta(o) > t $, to
-measure some minimum level of utility query function $ Q $,
-by checking that $ U(\delta_Q) $ holds. Alternate means could involve
+measure some minimum level of utility from the whitelist function $ W $,
+by checking that $ U(\delta_W) $ holds. Alternate means could involve
 the ubiquitous entropy quantity to measure a lower bound on the
 entropy of $ \delta_B $ and an upper bound on the entropy of $
-\delta_Q $.
+\delta_W $.
 
 %For example, Alice might not
 %want Bob to determine her religion from her secret information, but
@@ -275,9 +278,8 @@ entropy of $ \delta_B $ and an upper bound on the entropy of $
 
 Having the ability to measure the secrecy and utility of Bob's belief,
 Alice can then determine how to construct a function $ Q'(\asecret) =
-N(Q(O(\asecret))) $ to ensure $ \delta \cond \paren{Q(\rsecret) = o} $
-satisfies the security and utility policies (if possible).
-
+N(Q(O(\asecret))) $ to ensure $ \delta \cond \paren{Q'(\rsecret) = o} $
+satisfies the security and utility policies (when possible).
 
 Consider that obfuscation and noising functions can be specified as
 probabilistic programs with free parameters. Something that needs to
@@ -287,9 +289,11 @@ of parameters such that security and utility policies are satisfied.
 
 The simplest form of sharing information occurs when Bob's
 query $ Q $ simply outputs $ \rsecret $. In recent work we demonstrate
-how $ \asecret $ can be obfuscated via selecting to share only particular
-\emph{features}.
- 
+how $ \asecret $ can be obfuscated, via selecting to share
+only particular features of $ \asecret $, to protect Bob from guessing
+the output of a blacklis function $ B $ while maintaining
+that the whitelist function $ W $ is computable.
+
 \paragraph*{Predictive models for blacklist functions} The blacklist
 (and whitelist) functions are useful to protect information which is
 not part of the secret value $ \rsecret $, but is somehow correlated
