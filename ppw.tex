@@ -101,17 +101,17 @@ follow. We describe this core concept adopting the notation and
 conventions of Clarkson's experimental protocol
 \cite{clarkson09quantifying}.
 
-Bob seeks the answer of a query, a function evaluated on Alice's data.
+Bob seeks the answer of a query, the output of a function evaluated on Alice's data.
 The data here is secret in that Bob does not already know it.
 Alice wants to protect her secret, making sure that answering
 Bob's query is safe.
-To do this, Alice will explictly track what Bob
+To do this, Alice will explicitly track what Bob
 learns about her secret, treating Bob as a rational adversary
 who will use any information provided to him in order to learn Alice's
 secret. Specifying the protection of the secret will be addressed shortly.
 
 Alice's secret data is a value $ \rsecret $ which Bob knows is in some
-set of possibilities $ \secrets $. Furthermore, Bob considers some
+set of possibilities, $ \secrets $. Furthermore, Bob considers some
 values more likely than others, a probability distribution $ \delta_1
 : \secrets \ra \Real $. We will refer to this distribution as Bob's
 \emph{belief}. Alice then considers the effect of letting Bob learn
@@ -132,9 +132,8 @@ as a probability distribution. The problems of how Alice knew $
 can actually perform exact inference will need to be
 addressed.
 
-\paragraph*{Knowledge-based policy enforcement}
-
-Alice can use the tracked belief in a variety of ways, the most direct
+\paragraph*{Knowledge-based policy enforcement} Alice can use the tracked
+belief in a variety of ways, the most direct
 of which is to judge the information security or safety of $ Q $ in
 order to determine whether she should let Bob get access to the output
 of the function. To do this, Alice starts by defining a
@@ -168,37 +167,14 @@ never underestimate the probability of any secret, though it could
 over-approximate it. In recent work \cite{mardziel11belief}, we
 demonstrate a probabilistic language capable of this approximate, but
 sound inference. Given the definition of conditional probability, $
-Pr(A | B) = Pr(A \wedge B) / Pr(B) $, the probabilistic interpreter
-maintains an over-approximation of $ Pr(A \wedge B) $ and an
-under-approximation of $ Pr(B) $, leading to a sound upper bound for $
-Pr(A | B) $. The work shows how Alice can enforce her policy
+\Pr(A | B) = \Pr(A \wedge B) / \Pr(B) $, the probabilistic interpreter
+maintains an over-approximation of $ \Pr(A \wedge B) $ and an
+under-approximation of $ \Pr(B) $, leading to a sound upper bound for $
+\Pr(A | B) $. The work shows how Alice can enforce her policy
 without revealing anything about her secret to Bob. Further application
 of these ideas were proposed to protect information of multiple
 mutually distrusting parties participating in secure multi-party
 computation \cite{mardziel12smc}.
-
-%Before allowing Bob to observe the output of the
-%program $ Q $, she can make sure he will attain a safe level of
-%knowledge, according to policy $ P $. If $ Q $ is deemed unsafe, she
-%could either reject it or modify $ Q $ (obfuscate, add noise, etc.) to
-%make it more safe. Either way, Alice has to be careful in how she
-%performs these tasks. 
-%
-%\pxm{If there is no space, cut all the safe policy enforcement stuff
-%  below.}
-%
-%\paragraph*{Safe policy enforcement} The way Alice enforces her policy
-%$ P $ could leak information about her secret if she evaluates this policy on
-%Bob's conditioned knowledge, conditioned on output of $ Q $, given her
-%actual secret input $ s $. That is, $ \delta_2^\sim $ depends on $ s
-%$; if Bob learns that $ Q $ is unsafe, $ P(\delta_2^\sim) = \sfalse $,
-%he might learn something about $ s $.
-
-%$$ P^s(\delta) \defeq \forall s, \forall o \;\; P(\delta \acond
-%\paren{Q(s) = o}) = \strue $$
-%
-%$ P^s(\delta) = \strue $ implies $ P(\delta \acond \paren{Q(s) = o}) =
-%\strue $.
 
 If Alice deems $ Q $ safe, she can allow Bob access to $ Q(\rsecret) $
 and update her representation of Bob's belief to $ \delta_2^\sim $. If
@@ -238,25 +214,27 @@ If security is the only issue then a trivial noising function, $
 N(\rsecret) \defeq 42 $, ensures that Bob learns absolutely nothing
 about $ \rsecret $.  This ignores utility concerns that Bob (and
 Alice) might be interested in. One approach is to specify Bob's
-utility in terms of the accuracy or precision of the query answer $
-Q(\rsecret) $.  Depending on the structure of $ Q $, it is certainly
+utility in terms of the accuracy or precision of shared query answer 
+$ o' $ compared to the actual query answer $ o $.
+Depending on the structure of $ Q $, it is certainly
 possible to reveal some obfuscated or noised version $Q'$ that
 simultaneously satisfy both security and utility objectives.
 
-\paragraph*{Secrets as Probablistic Programs} Likewise it might
+\paragraph*{Secrets as Probabilistic Programs}  It might
 appropriate for Alice to express her security concerns in terms of a
 function of her secret data, instead of the secret data itself.
 Her data might itself not be all that damaging, and in that
-setting it does not make sense for Alice to protect its reconstruction
-by Bob. Instead Alice can define a ``blacklist'' function $ B $
-specified as a probablistic program that operates on her data, and
+setting it does not make sense for Alice to protect against
+its reconstruction by Bob.
+Instead Alice can define a ``blacklist'' function $ B $,
+specified as a probabilistic program that operates on her data,
 whose output she would like to protect from inference by Bob.
 
 In order to check security of $ B $, and utility of $ Q $, relative
 to Bob's knowledge of her secret, she can evaluate these functions on
 the probabilistic value representing Bob's knowledge, written $
 B(\delta) $ and $ Q(\delta) $, respectively. Alice can then attempt to
-add obfuscation/noise while making sure some agree-upon utility policy
+add obfuscation/noise while making sure some agreed-upon utility policy
 $ U $ will be satisfied on Bob's view on the output of $ Q $.
 
 \begin{definition-un}
@@ -275,12 +253,6 @@ U(Q(\delta)) $ holds. Alternate means could involve the ubiquitous
 entropy quantity to measure a lower bound on the entropy of $ B(\delta)
 $ and an upper bound on the entropy of $ Q(\delta) $.
 
-%For example, Alice might not
-%want Bob to determine her religion from her secret information, but
-%agrees that it is acceptable that Bob determines her age, regardless
-%of whether these properties are directly part of the fields of Alice's
-%secret $ \rsecret $.
-
 Having the ability to measure the secrecy and utility of Bob's belief,
 Alice can then determine how to construct a function $ Q'(\asecret) =
 N(Q(O(\asecret))) $ to ensure $ \delta \cond \paren{Q'(\rsecret) = o}
@@ -290,17 +262,12 @@ sets of features of $ \asecret $ can be safely shared, while
 preventing Bob from guessing the output of a blacklist function $ B $
 defined on same set of features.
 
-\pxm{I don't understand the below paragraph.}  Further applications of
-these ideas in the framework of belief tracking presented here remains
-to be explored. We have not considered yet designing obfuscating and
-noising for arbitrary query functions and blacklist functions.  If we
-assume obfuscation and noising functions are specified as
-probabilistic programs with free parameters, a naive method to satisfy
-security and utility policies could be to enumerate and choose among
-the choices for these free parameters.  An open question is to ask
-whether the specification of obfuscation and noising functions can be
-posed as a problem of inference, can we efficiently and mechanically
-\emph{learn} appropriate choices for them?  
+We have not considered yet the design of obfuscation and noising functions.
+One approach is to assume that obfuscation and noising functions are specified as
+probabilistic programs with some free parameters. For example, we might consider
+noising a Boolean query function so that with probability $ \rho $ the output
+is forced to $ \strue $. By sweeping over choices for $ \rho $, we can check whether
+there is a $ \rho $ that satisfies both security and utility objectives.
 
 \paragraph*{Predictive models for blacklist functions} The blacklist
 (and utility) functions are useful to protect information which is not
@@ -339,9 +306,9 @@ If we assume Bob takes advantage of a common labeled dataset $ D_r $
 of tuples $ (s_i, r_i) $ tying demographical information to religion,
 Bob can learn a variety of predictive models for religion via
 supervised machine learning techniques. Alice would like to therefore
-protect herself (via blacklist) against any model that from Bob's
-point of view is accurate (in that it does well on predicting religion
-in $ D_r $). How to do this effectively is a challenging aspect we
+protect herself (by specifying blacklists) against any model that from Bob's
+point of view is accurate--i.e. it does well on predicting religion
+in $ D_r $. How to do this effectively is a challenging aspect we
 would like to address in the future.
 
 A related problem is how Alice can construct $ \delta $, the initial
@@ -357,79 +324,22 @@ a statistical model with some unknown parameters $ p $ with an initial
 distribution on $ p $, labeled $ \delta_p $ and sampling function $ S
 $, written in a probabilistic language, that produces samples $
 \asecret \in \secrets $ given parameters $ p $. Alice could then infer
-these parameters by conditioning on the samples from this distribution
-being $ D $, specifically $ \delta_p \cond (S(p) = \asecret_1) \cond
+these parameters by conditioning on the samples from this distribution,
+specifically $ \delta_p \cond (S(p) = \asecret_1) \cond
 (S(p) = \asecret_2) \cond \cdots $ as is demonstrated in recent work
 of Gordon et al.\cite{gordon13model}. Bob's initial belief about $
 \rsecret $ would then be the distribution $ S(\delta_p) $.
 
 The problem here is the same as in the problem of specifying blacklist
-functions; Alice does not know what model Bob could use, either to
-infer her religion, or to form an initial belief. Alice could take
+functions; Alice does not know what model Bob could use either to
+infer the blacklist (e.g. religion) or to form an initial belief. 
+Alice could take
 into account multiple models, thereby having to track several options
 for Bob's belief, but how to construct a sufficient set of models is
 another challenging element of our future work.
-
-%Our goal is then, given a set of data instances $ D $, with two class
-%attributes, one ``whitelist'', and one ``blacklist'', to create
-%noising/obfuscation functions that, when applied to the data
-%instances, will make \emph{all} classifiers for the blacklist
-%attribute fail (perform poorly) but make some classifiers for the
-%whitelist attribute perform well. \pxm{todo: Write this in a nicer
-%  way. Thinking about this now, it seems like it can all be described
-%  without need for probabilistic computing.}
-
-%From a set of blacklist functions $\blacklists$ and a set of whitelist
-%functions $\whitelists$ each a predictive model specified as a
-%probabilistic program, our goal is to then create noising/obfuscation
-%functions, that $ \forall B \in \blacklists $ satisfies the security
-%policy $ P(B(\delta_2^\sim)) $, while $ \exists W \in \whitelists $
-%satisfies the utility policy $ U(W(\delta_2^\sim)) $.  In
-%\cite{chakraborty12balancing} we demonstrated one means of learning
-%obfuscation functions that satisfy security and utility policies in
-%sharing with Bob an obfuscated version of Alice's secret value, $ Q =
-%O(s) $, via suppressing and selecting to share only particular
-%features of Alice's secret information.
-
-% \subsubsection*{Acknowledgments}
-
-%\cite{mardziel12smc} \cite{mardziel11belief}
-%\cite{smith09foundations} \cite{clarkson09quantifying}
-%\cite{alvim12gain} \cite{yasuoka10quantitative}
-%\cite{gordon13model} \cite{kenthapadi05simulatable}
-%\cite{rastogi09relationship} \cite{yasuoka11bounding}
 
 \bibliographystyle{plain}
 \bibliography{ppw}
 
 \end{document}
 
-
-%\begin{abstract}
-%\end{abstract}
-
-% \section{Introduction}
-
-%\begin{figure}[h]
-%\begin{center}
-%%\framebox[4.0in]{$\;$}
-%\fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-%\end{center}
-%\caption{Sample figure caption.}
-%\end{figure}
-
-% \subsection{Background}
-
-%\begin{table}[t]
-%\caption{Sample table title}
-%\label{sample-table}
-%\begin{center}
-%\begin{tabular}{ll}
-%\multicolumn{1}{c}{\bf PART}  &\multicolumn{1}{c}{\bf DESCRIPTION}
-%\\ \hline \\
-%Dendrite         &Input terminal \\
-%Axon             &Output terminal \\
-%Soma             &Cell body (contains cell nucleus) \\
-%\end{tabular}
-%\end{center}
-%\end{table}
