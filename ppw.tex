@@ -280,20 +280,24 @@ Having the ability to measure the secrecy and utility of Bob's belief,
 Alice can then determine how to construct a function $ Q'(\asecret) =
 N(Q(O(\asecret))) $ to ensure $ \delta \cond \paren{Q'(\rsecret) = o} $
 satisfies the security and utility policies (when possible).
-
-Consider that obfuscation and noising functions can be specified as
-probabilistic programs with free parameters. Something that needs to
-be addressed is to devise efficient methods that leverage
-probablistic computation to \emph{learn} an appropriate choice
-of parameters such that security and utility policies are satisfied.
-
-The simplest form of sharing information occurs when Bob's
+A simple form of information sharing occurs when Bob's
 query simply asks for Alice's data, i.e. $Q(\asecret) = \rsecret $.
-In recent work \cite{chakraborty12balancing} we demonstrate how
-$ Q $ can be obfuscated, via selecting to share only particular
+In recent work \cite{chakraborty12balancing} we demonstrate how this
+query answer can be obfuscated, via selecting to share only particular
 features of $ \asecret $, to protect Bob from guessing the output of
 a blacklist function $ B $ while allowing Bob to learn the output of
 a whitelist function $ W $.
+
+More generally, we need to consider the case of arbitrary query functions.
+Here if we assume obfuscation and noising functions are specified as
+probabilistic programs with free parameters, a naive method to satisfy
+security and utility policies could be to enumerate and choose among
+the choices for these free parameters.
+An open question is to ask whether the
+specification of obfuscation and noising functions can be posed as a problem
+of inference, a way to effeciently and mechanically \emph{learn} an appropriate
+choice for free paramters.
+
 
 \paragraph*{Predictive models for blacklist functions} The blacklist
 (and whitelist) functions are useful to protect information which is
