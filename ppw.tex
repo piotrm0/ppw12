@@ -288,11 +288,12 @@ probablistic computation to \emph{learn} an appropriate choice
 of parameters such that security and utility policies are satisfied.
 
 The simplest form of sharing information occurs when Bob's
-query $ Q $ simply outputs $ \rsecret $. In recent work we demonstrate
-how $ \asecret $ can be obfuscated, via selecting to share
-only particular features of $ \asecret $, to protect Bob from guessing
-the output of a blacklis function $ B $ while maintaining
-that the whitelist function $ W $ is computable.
+query simply asks for Alice's data, i.e. $Q(\asecret) = \rsecret $.
+In recent work \cite{chakraborty12balancing} we demonstrate how
+$ Q $ can be obfuscated, via selecting to share only particular
+features of $ \asecret $, to protect Bob from guessing the output of
+a blacklist function $ B $ while allowing Bob to learn the output of
+a whitelist function $ W $.
 
 \paragraph*{Predictive models for blacklist functions} The blacklist
 (and whitelist) functions are useful to protect information which is
