@@ -1,3 +1,6 @@
+%\newif \ifack \acktrue
+\newif \ifack \ackfalse
+
 \documentclass{article} % For LaTeX2e
 \usepackage{nips12submit_e,times}
 \usepackage{color}
@@ -239,7 +242,7 @@ $ U $ will be satisfied on Bob's view on the output of $ Q $.
 \begin{definition-un}
 Given belief $ \delta $, security policy $ P $ and utility policy $ U
 $, are satisfied for blacklist function $ B $ and utility function $ Q
-$ whenever $P(B(\delta))$ and $U(W(\delta))$ hold. 
+$ whenever $P(B(\delta))$ and $U(Q(\delta))$ hold. 
 \end{definition-un}
 
 Alice can determine the safety of $ B(\delta) $ and utility of $
@@ -336,6 +339,21 @@ infer the blacklist (e.g. religion) or to form an initial belief.
 Alice could take into account multiple models, thereby having to track
 several options for Bob's belief, but how to construct a sufficient
 set of models is another challenging element of our future work.
+
+\ifack
+\paragraph*{Acknowledgments}
+\begin{small}
+Research was sponsored by US Army Research laboratory and the UK
+Ministry of Defence and was accomplished under Agreement Number
+W911NF-06-3-0001. The views and conclusions contained in this document
+are those of the authors and should not be interpreted as representing
+the official policies, either expressed or implied, of the US Army
+Research Laboratory, the U.S. Government, the UK Ministry of Defense,
+or the UK Government. The US and UK Governments are authorized to
+reproduce and distribute reprints for Government purposes
+notwithstanding any copyright notation hereon.
+\end{small}
+\fi
 
 \bibliographystyle{plain}
 \bibliography{ppw}
