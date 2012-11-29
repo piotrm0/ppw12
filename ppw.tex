@@ -167,12 +167,14 @@ approximation to be sound relative to her policy:
 
 For Alice's example policy, a sound inference method would have to
 never underestimate the probability of any secret, though it could
-over-approximate it. In recent work \cite{mardziel11belief}, we
-demonstrate a probabilistic language capable of this approximate, but
-sound inference. Given the definition of conditional probability, $
+over-approximate it. In recent work \cite{mardziel11belief,
+mardziel12belieflong}, we demonstrate a probabilistic language capable
+of this approximate, but sound inference. Given the definition of
+conditional probability, $
 \Pr(A | B) = \Pr(A \wedge B) / \Pr(B) $, the probabilistic interpreter
 maintains an over-approximation of $ \Pr(A \wedge B) $ and an
-under-approximation of $ \Pr(B) $, leading to a sound upper bound for $
+under-approximation of $ \Pr(B) $, leading to a sound upper bound for
+$
 \Pr(A | B) $. The work shows how Alice can enforce her policy
 without revealing anything about her secret to Bob. Further application
 of these ideas were proposed to protect information of multiple
