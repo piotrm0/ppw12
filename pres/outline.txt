@@ -1,0 +1,24 @@
+main points:
+- probabilistic computation is a very convenient way of describing a
+  variety of information security issues
+  > two primitives: probabilistic interpretation, probabilistic inference
+- knowledge tracking summary
+  > 
+- progression of information flow
+  > information flow: does information flow ?
+  > quantified information flow: how much information flows ?
+  > semantic information flow: what information flows ?
+
+- exploiting models of knowledge
+  > auditing
+  > policy enforcement
+    . simulatable auditing
+    . blacklist functions
+  > queries on existing knowledge
+- problems
+  > approximate inference
+    . sound approximation
+  > initial belief
+    . model learner from public statistics
+    . which model?
+
