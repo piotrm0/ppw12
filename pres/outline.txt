@@ -22,3 +22,106 @@ main points:
     . model learner from public statistics
     . which model?
 
+1: title / names
+
+2: convenience of probabilistic programming
+
+Probabilistic programming provides a very convenient way of reasoning
+what an agent interacting with system learns about potentially
+sensitive information, as long as the system can be described by a
+probabilistic program. This is especially convenient if the system is
+a program to begin with.
+
+By probabilistic programming I mean the ability to take distributions
+over states, evaluate programs over such probabilistic state, retrieve
+the distribution over the final states, and perform conditioning on
+some aspect of the state (or function output).
+
+3: tracking knowledge
+
+These things let us reason about knowledge an agent attains. As a
+silly concrete example let us consider a advertising services,
+represented by Bob, wishes to provide Alice some specialized offers
+based on her demographic information. You have to suspend your
+disbelief a bit here and imagine a world in which people care about
+privacy and Alice is somehow able to retain control over her private
+information and allows advertisers to evaluate functions over this
+information. Justifying this scenario is not relevant to what I would
+like to convey.
+
+So let us say Alice has secret age, gender, and predicate engaged?,
+while Bob has some belief or distribution over these 3 values, written
+B_1~(age, gender, engaged?) or B_1~S where S is the triple. He wants
+to determine whether she should be presented a special offer for a
+wedding cake:
+
+special-offer?(age, gender, engaged?) :=
+  if 21 <= age < 28 and
+     gender = female and
+     engaged? = true then return true else return false
+
+If the output of this function is true, given Alice's input, and Bob
+learns this output, then he would revise his belief about Alice to
+
+B_2~S = B_1~S | (special-offer(B_1~S) = true)
+
+(or "observe special-offer(s) = true; return s")
+
+From B_2~S, the process can be continued to determine what Bob would
+know about Alice after additional functions, thereby "tracking
+knowledge" Bob would attain from these interactions.
+
+4: outline
+
+- knowledge tracking (done)
+
+- information security
+
+- fine-grained knowledge policies 
+
+So that was probabilistic programming for reasoning about knowledge,
+next we will look at how this knowledge-tracking can be used for
+information security and the care one must take in implementing
+mechanisms for this tasks. This will be brief summary of some of my
+existing work. Finally we will talk a bit about how knowledge-tracking
+fits in a larger field of information flow and some of my current
+thoughts on specifying fine-grained knowledge policies.
+
+5: information security
+
+Looking back to special-offer example, if Alice knew what Bob's
+initial belief B_1~S was, she could perform the necessary computation
+to track how Bob's belief changes (to B_2~S and so on). This could in
+itself be useful as a means of \emph{auditing} knowledge, an offline
+task she could do in order to determine the total information revealed
+overall.
+
+She could also perform such tracking online, before giving Bob the
+function outputs. For example, she could compute B_2~S before
+reporting that special-offer(A) = true. Given this potential revised
+belief, she could evaluate whether it is too revealing or not, via
+some sort of knowledge-based policy P(~S) -> {true,false}. She could
+refuse to return the function output if this policy deems the function
+unsafe to answer.
+
+6. enforcement care
+
+Alice needs to be careful how she goes about enforcing such
+policies. The first issue, which I will mostly glance over, is to make
+sure that enforcing the policy does not reveal anything about her
+information. This can be accomplished by defining the policy over
+beliefs B~S, specifically independent of Alice's actual secret
+values. In particular, a policy of the form:
+
+~S(age = A.age) < 0.1
+
+Would not fly. Refusing to answer a query because a policy like that
+deemed B_2~S unsafe reveals something about A.age. For some priors, it
+might reveal A.age entirely.
+
+The second issue is of computational tractability. Probabilistic
+inference is not always an efficient process and depending on the
+structure of Bob's prebelief, or the structure of the function to
+evaluate, it might be very intractable for Alice to determine B_2~S
+exactly.
+
