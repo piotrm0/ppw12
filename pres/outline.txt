@@ -117,7 +117,11 @@ values. In particular, a policy of the form:
 
 Would not fly. Refusing to answer a query because a policy like that
 deemed B_2~S unsafe reveals something about A.age. For some priors, it
-might reveal A.age entirely.
+might reveal A.age entirely. On the other hand, the policy:
+
+~S(age = a) < 0.1 for every a
+
+Would be ok, as it does not depend on Alice's actual secret value.
 
 The second issue is of computational tractability. Probabilistic
 inference is not always an efficient process and depending on the
@@ -125,3 +129,22 @@ structure of Bob's prebelief, or the structure of the function to
 evaluate, it might be very intractable for Alice to determine B_2~S
 exactly.
 
+So Alice can instead use an approximate inference algorithm to
+approximate B_2~S to some level of precision. However, she would like
+to make sure she is safe regardless of this precision. She can do this
+by making sure whatever inference algorithm she uses is sound relative
+to the policy she is enforcing. That is, if P(B_2~S) fails, then for
+the approximate B'_2~S, P(B'_2~S) also fails.
+
+For our particular example, this would mean that B'_2~S cannot
+underapproximate the probability of any age, but can overapproximate
+it (and need not be a proper probability distribution). You can see an
+example of such a scheme in my recent revision of an older paper,
+"Dynamic Enforcement of Knowledge-based Security Policies via Abstract
+Interpretation".
+
+7. information flow
+
+Knowledge tracking is a means of reasoning about information flow, a
+further generalization of some other techniques for reasoning about
+information flow. 
