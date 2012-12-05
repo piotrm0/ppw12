@@ -57,8 +57,8 @@ wedding cake:
 
 special-offer?(age, gender, engaged?) :=
   if 21 <= age < 28 and
-     gender = female and
-     engaged? = true then return true else return false
+     gender == 'female and
+     engaged? then return true else return false
 
 If the output of this function is true, given Alice's input, and Bob
 learns this output, then he would revise his belief about Alice to
@@ -145,6 +145,71 @@ Interpretation".
 
 7. information flow
 
+information flow/non-interference: Does information flow?
+quantified information flow: How much information flows?
+"semantic" information flow: What information flows?
+
 Knowledge tracking is a means of reasoning about information flow, a
 further generalization of some other techniques for reasoning about
-information flow. 
+information flow. Back some number of years ago, people were
+interested in whether high security data "flows" to low security
+observations. In terms of a program, whether high security variable
+influences some low security variable. This is the "non-interference"
+formulation of the question. Most practically this was done with
+either tainting tracking or various type systems with security
+labels. 
+
+The yes or no question is too strict as real systems have intended
+interference. So eventually arose an interest in not just determining
+whether information flows, but how much information flows. This is
+formulated using various information theoretic quantities. Entropy,
+min-entropy, guessing entropy. Simplifying a bit, the scheme here is
+to compare the entropy (or other) of some initial distribution over
+secrets to the entropy of the revised distribution (based on some
+observed output). So instead of being a yes/no, flow becomes a real
+quantity. This quantity can be enforced in either a relative or
+absolute sense, preventing larges decreases in entropy in the former,
+and preventing the entropy over the posterior distribution from ever
+reaching a low level. I say entropy here but there are many proposed
+dimensions to this quantity and it unclear which, if any, makes the
+most sense.
+
+Ok, tracking knowledge we answer an even more general question: not
+whether information flows, not how much, but what information
+flows. Let us pretend we can visualize the set of all distributions
+over some fixed state-space as this rectangle, though really it is a
+much more complex entity. The process of conditioning takes us from
+one point to another. In terms of enforcing some limits to knowledge,
+we are effectively defining a prohibited zone. The example policy I
+defined earlier is an example of a min-entropy threshold:
+
+H_\inft(~S) = max_s ~S(s)
+
+How could Alice justify the use of a knowledge-limit of this form?
+Does she really care what is the likelihood of Bob guessing the triple
+(age, gender, engaged?) in one try? Doubtful.
+
+On the other hand Alice might have more specific concerns. For
+example, she might want to keep her political preference a
+secret. This is where having the higher level "semantic" information
+view and probabilistic programming can help.
+
+Let us say Alice has determined that the function pol-pref(s) is a
+very classifier for political preference given age, gender, engaged?,
+she can determine whether Bob's level of knowledge is good at
+predicting her political preference (via pol-pref) by computing
+
+B_2~p def= pol-pref(B_2~s)
+
+She might then check that the entropy of this distribution is
+sufficiently high as this distribution is much closer to her privacy
+concerns than merely B_2~s. If approximate, soundness concerns would
+have to be defined relative to this measurement.
+
+8. conclusion
+
+Probabilistic programming is useful for thinking about information
+security and implementing protection mechanisms. I read one of the
+goals of this workshop is to assess probabilistic programming
+languages so I would like to add another criterion to this assessment
+specific to use for security; soundness guarantees.
